@@ -51,14 +51,27 @@ END;
 GO
 
 
-CREATE OR ALTER PROCEDURE GetAllBooks
+ALTER   PROCEDURE [dbo].[GetAllBooks]
+(
+	@AuthorId INT=1,
+	@Name VARCHAR(200)='',
+	@FromDate VARCHAR(200)='',
+	@ToDate VARCHAR(200)='',
+	@CategoryId INT=0
+)
 AS
 BEGIN
     SELECT B.Id, B.Name, B.CoverPhotoPath, B.BookSoftPath, B.PageNo,
            A.Name AS AuthorName, C.Name AS CategoryName,B.PublishDate
     FROM Book B
     JOIN Author A ON B.AuthorId = A.Id
-    JOIN Category C ON B.CategoryId = C.Id;
+    JOIN Category C ON B.CategoryId = C.Id
+
+	WHERE (@CategoryId=0 OR B.CategoryId=@CategoryId)
+	AND (@AuthorId='' OR B.AuthorId=@AuthorId)
+	AND (@Name='' OR B.Name LIKE '%'+@Name+'%')
+	AND(@FromDate='' OR B.PublishDate>=CONVERT(DATE,@FromDate))
+	AND(@ToDate='' OR B.PublishDate<=CONVERT(DATE,@ToDate))
 END;
 
 
