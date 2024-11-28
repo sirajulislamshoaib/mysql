@@ -37,6 +37,8 @@ BEGIN
     WHERE Id = @Id;
 END;
 
+
+
 GO
 
 
@@ -53,7 +55,7 @@ GO
 
 ALTER   PROCEDURE [dbo].[GetAllBooks]
 (
-	@AuthorId INT=1,
+	@AuthorId INT=0,
 	@Name VARCHAR(200)='',
 	@FromDate VARCHAR(200)='',
 	@ToDate VARCHAR(200)='',
@@ -62,7 +64,7 @@ ALTER   PROCEDURE [dbo].[GetAllBooks]
 AS
 BEGIN
     SELECT B.Id, B.Name, B.CoverPhotoPath, B.BookSoftPath, B.PageNo,
-           A.Name AS AuthorName, C.Name AS CategoryName,,ISNULL(B.PublishDate,'') PublishDate
+           A.Name AS AuthorName, C.Name AS CategoryName,ISNULL(B.PublishDate,'') PublishDate,B.AuthorId,A.Name AuthorName
     FROM Book B
     JOIN Author A ON B.AuthorId = A.Id
     JOIN Category C ON B.CategoryId = C.Id
@@ -74,7 +76,6 @@ BEGIN
 	AND(@ToDate='' OR B.PublishDate<=CONVERT(DATE,@ToDate))
 END;
 
-
 GO
 
 CREATE OR ALTER PROCEDURE GetBookById
@@ -83,3 +84,30 @@ AS
 BEGIN
     SELECT * FROM Book WHERE Id = @Id;
 END;
+
+GO
+
+ALTER   PROCEDURE [dbo].[UpdateBook]
+    @Id INT,
+    @Name NVARCHAR(200),
+    @AuthorId INT,
+    @CategoryId INT,
+    @CoverPhotoPath NVARCHAR(MAX),
+    @BookSoftPath NVARCHAR(MAX),
+    @PageNo INT
+AS
+BEGIN
+    UPDATE Book
+    SET Name = @Name,
+        AuthorId = @AuthorId,
+        CategoryId = @CategoryId,
+		CoverPhotoPath=CASE WHEN @CoverPhotoPath= '' THEN CoverPhotoPath ELSE @BookSoftPath END,
+		BookSoftPath=CASE WHEN @BookSoftPath = '' THEN BookSoftPath ELSE @BookSoftPath END,
+        PageNo = @PageNo
+    WHERE Id = @Id;
+END;
+
+
+
+
+
