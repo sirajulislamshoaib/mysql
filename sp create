@@ -1,0 +1,69 @@
+CREATE OR ALTER PROCEDURE AddBook
+    @Name NVARCHAR(200),
+    @AuthorId INT,
+    @CategoryId INT,
+    @CoverPhotoPath NVARCHAR(MAX),
+    @BookSoftPath NVARCHAR(MAX),
+    @PageNo INT
+AS
+BEGIN
+    INSERT INTO Book (Name, AuthorId, CategoryId, CoverPhotoPath, BookSoftPath, PageNo)
+    VALUES (@Name, @AuthorId, @CategoryId, @CoverPhotoPath, @BookSoftPath, @PageNo);
+END;
+
+
+GO
+
+CREATE OR ALTER PROCEDURE UpdateBook
+    @Id INT,
+    @Name NVARCHAR(200),
+    @AuthorId INT,
+    @CategoryId INT,
+    @CoverPhotoPath NVARCHAR(MAX),
+    @BookSoftPath NVARCHAR(MAX),
+    @PageNo INT
+AS
+BEGIN
+    UPDATE Book
+    SET Name = @Name,
+        AuthorId = @AuthorId,
+        CategoryId = @CategoryId,
+        CoverPhotoPath = @CoverPhotoPath,
+        BookSoftPath = @BookSoftPath,
+        PageNo = @PageNo
+    WHERE Id = @Id;
+END;
+
+GO
+
+
+CREATE OR ALTER PROCEDURE DeleteBook
+    @Id INT
+AS
+BEGIN
+    DELETE FROM Book WHERE Id = @Id;
+END;
+
+
+GO
+
+
+CREATE OR ALTER PROCEDURE GetAllBooks
+AS
+BEGIN
+    SELECT B.Id, B.Name, B.CoverPhotoPath, B.BookSoftPath, B.PageNo,
+           A.Name AS AuthorName, C.Name AS CategoryName
+    FROM Book B
+    JOIN Author A ON B.AuthorId = A.Id
+    JOIN Category C ON B.CategoryId = C.Id;
+END;
+
+
+GO
+
+CREATE OR ALTER PROCEDURE GetBookById
+    @Id INT
+AS
+BEGIN
+    SELECT * FROM Book WHERE Id = @Id;
+END;
