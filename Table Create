@@ -1,0 +1,21 @@
+CREATE TABLE Category (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Name NVARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Author (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Name NVARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Book (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Name NVARCHAR(200) NOT NULL,
+    AuthorId INT NOT NULL,
+    CategoryId INT NOT NULL,
+    CoverPhotoPath NVARCHAR(MAX),
+    BookSoftPath NVARCHAR(MAX),
+    PageNo INT NOT NULL,
+    FOREIGN KEY (AuthorId) REFERENCES Author(Id),
+    FOREIGN KEY (CategoryId) REFERENCES Category(Id)
+);
