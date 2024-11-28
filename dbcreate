@@ -51,12 +51,13 @@ GO
 
 CREATE TABLE [dbo].[Book](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Title] [varchar](200) NOT NULL,
+	[Name] [varchar](200) NOT NULL,
 	[CategoryId] [int] NOT NULL,
 	[AuthorId] [int] NOT NULL,
 	[PageNo] [int] NOT NULL,
 	[CoverPhotoPath] [varchar](500) NULL,
 	[BookPdfPath] [varchar](500) NULL,
+        [PublishDate][varchar](50) NULL,
  CONSTRAINT [PK_Book] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
